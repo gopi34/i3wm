@@ -57,10 +57,11 @@ bindsym $mod+Shift+q kill
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
+#My initial version dmenu only with desktop apps
 #bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 
 #My version of rofi with dmenu-desktop applications
-bindsym $mod+d exec --no-startup-id i3-dmenu-desktop --dmenu="rofi -dmenu -lines 3 -eh 2 -width 100 -padding 340 -opacity \"80\" -bw 0 -bc \"$base01\" -bg \"$base02\" -fg \"$base07\" -hlbg \"$base05\" -hlfg "\#9575cd\" "
+bindsym $mod+d exec rofi -show run -lines 3 -eh 2 -width 100 -padding 340 -opacity "80" -bw 0 -bc "$base01" -bg "$base02" -fg "$base07" -hlbg "$base05" -columns 2 -hlfg "#9575cd"
 
 # change focus
 bindsym $mod+j focus left
@@ -114,16 +115,16 @@ bindsym $mod+a focus parent
 
 # Assign workspace
 
-set $workspace1 "1"
-set $workspace2 "2"
-set $workspace3 "3: "
-set $workspace4 "4: "
-set $workspace5 "5: "
+set $workspace1 "1: "
+set $workspace2 "2: "
+set $workspace3 "3: "
+set $workspace4 "4: "
+set $workspace5 "5: "
 set $workspace6 "6: "
-set $workspace7 "7: "
+set $workspace7 "7: "
 set $workspace8 "8: "
 set $workspace9 "9: "
-set $workspace10 "10: "
+set $workspace10 "10: "
 
 # switch to workspace
 bindsym $mod+1 workspace $workspace1
@@ -152,11 +153,14 @@ bindsym $mod+Shift+0 move container to workspace $workspace10
 # Assign app to workspace
 assign [class="Gnome-terminal"] $workspace1
 assign [class="Firefox"] $workspace2
-assign [class="Thunar"] $workspace3
-
+assign [class="nautilus"] $workspace3
+assign [class="google-chrome"] $workspace4
+assign [class="Spyder"] $workspace5
+assign [class="gedit"] $workspace7
+assign [class="vlc"] $workspace10 
 exec i3-sensible-terminal
-exec firefox
-exec thunar
+#exec firefox
+#exec nautilus
 
 # Floating
 for_window [class="Lxappearance"] floating enable
@@ -197,12 +201,13 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
+
 # Widow Colours
-#                       	border  background 	text    	indicator
-client.focused          	$base01 $base01    	$base07 	$base0F
-client.focused_inactive 	$base02 $base02    	$base03 	$base0F
-client.unfocused        	$base02 $base02    	$base03 	$base0F
-client.urgent 			$base02 $base08    	$base00 	$base0F
+#                         border  background text    indicator
+  client.focused          $base01 $base01    $base07 $base0F
+  client.focused_inactive $base02 $base02    $base03 $base0F
+  client.unfocused        $base02 $base02    $base03 $base0F
+  client.urgent           $base02 $base08    $base00 $base0F
 
 
 # Start i3bar to display a workspace bar (plus the system information i3status
@@ -259,5 +264,8 @@ exec_always feh --bg-scale ~/Pictures/mac_os_x_lion-2560x1440.jpg
 #to start nm-applet
 exec --no-startup-id nm-applet
 
-#Compton for trans effects
+# Fix Nautilius issue on Ubuntu
+exec_always gsettings set org.gnome.desktop.background show-desktop-icons false
+exec_always gsettings set org.nemo.desktop show-desktop-icons false
+
 exec_always compton -f
